@@ -1,0 +1,9 @@
+#modules
+/node_modules/
+#personalinfo
+targets.md
+Resumes/myResume1.odt
+Templates/mytemplate1.odt
+.claude/settings.local.json
+#secrets
+.env
