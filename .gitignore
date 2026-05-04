@@ -1,9 +1,12 @@
 #modules
 /node_modules/
 #personalinfo
-targets.md
-Resumes/myResume1.odt
-Templates/mytemplate1.odt
+/data/targets.md
+/data/profile.md
+JD/*
+Resumes/*
+Templates/SWEBASE.odt
+Template/SWEBASE.md
 .claude/settings.local.json
 #secrets
 .env

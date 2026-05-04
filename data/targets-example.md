@@ -8,7 +8,7 @@ New York, NY
 San Francisco, CA
 
 ## Target Compensation:
-MIN: 100_000
+MIN: $XX_000
 MAX: inf
 
 ## Posted in the last:
