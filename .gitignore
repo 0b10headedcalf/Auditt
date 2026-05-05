@@ -5,8 +5,11 @@
 /data/profile.md
 JD/*
 Resumes/*
+job-results/*
 Templates/SWEBASE.odt
-Template/SWEBASE.md
+Templates/SWEBASE.md
 .claude/settings.local.json
 #secrets
 .env
+credentials.json
+token.json

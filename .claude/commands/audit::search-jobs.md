@@ -3,7 +3,7 @@ description: Search Indeed for jobs matching targets in targets.md
 allowed-tools: Read, Write, mcp__claude_ai_Indeed__search_jobs, mcp__claude_ai_Indeed__get_job_details
 ---
 
-Search Indeed for jobs matching targets defined in `targets.md`.
+Search Indeed for jobs matching targets defined in `./data/targets.md`.
 
 ## Arguments
 
