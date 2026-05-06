@@ -5,8 +5,7 @@
 ░█████████ ░██    ░██ ░██    ░██ ░██   ░██       ░██    
 ░██    ░██ ░██    ░██ ░██    ░██ ░██   ░██       ░██    
 ░██    ░██ ░██   ░███ ░██   ░███ ░██   ░██       ░██    
-░██    ░██  ░█████░██  ░█████░██ ░██    ░████     ░████ 
-                                                        
+░██    ░██  ░█████░██  ░█████░██ ░██    ░████     ░████                                                        
 </pre>
 
 # Auditt
@@ -34,7 +33,6 @@ AI-powered job search automation. Scrapes listings, scores them against your tar
 
 - [Bun](https://bun.sh) — `curl -fsSL https://bun.sh/install | bash`
 - [Claude Code](https://claude.ai/code) — skills run inside Claude Code
-- An Anthropic API key
 
 ### Install
 
@@ -45,11 +43,6 @@ bun install
 ```
 
 ### Configure
-
-```bash
-cp .env.example .env
-# Set ANTHROPIC_API_KEY in .env
-```
 
 Edit `data/targets.md` with your target roles, locations, and compensation. Edit `data/profile.md` with your background.
 
@@ -99,7 +92,7 @@ scripts/
 
 ## Resume builder
 
-Directly builds ODT files by patching the template's `content.xml` — no LibreOffice dependency, no formatting drift.
+Directly builds ODT files by patching the template's `content.xml`.
 
 ```bash
 bun run scripts/build_resume_odt.ts \
@@ -118,11 +111,3 @@ bun run scripts/gmail.ts body <threadId>
 ```
 
 ---
-
-## Secrets
-
-| File | Purpose | Committed |
-|------|---------|-----------|
-| `.env` | `ANTHROPIC_API_KEY` | No |
-| `credentials.json` | Google OAuth client | No |
-| `token.json` | Gmail access/refresh tokens | No |
