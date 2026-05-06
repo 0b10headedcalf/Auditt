@@ -1,12 +1,13 @@
 /**
  * Build a tailored ODT resume by cloning a template ODT's exact XML structure.
  * Replaces only text content; all styles, fonts, spans, namespaces preserved.
+ * Converts the output ODT to PDF via LibreOffice headless.
  *
  * Usage:
- *   bun run build_resume_odt.ts --template SWEBASE --slug 2026-05-04_honeywell_software-engineer-1
+ *   bun run build_resume_odt.ts --template SWEBASE --slug 2026-05-05_maybern_forward-deployed-engineer
  *
  * --template  Case-insensitive partial match against filenames in ./Templates/
- * --slug      Output filename stem; written to ./Resumes/<slug>_resume.odt
+ * --slug      Output filename stem; written to ./Resumes/<slug>_resume.odt + .pdf
  *
  * Web-friendly: only fflate (works in browser) + Bun file I/O at the edges.
  * Swap Bun.file / Bun.write calls for fetch / File APIs to run in-browser.
@@ -15,6 +16,7 @@
 import { unzipSync, zipSync, strToU8, strFromU8 } from "fflate";
 import { readdirSync } from "node:fs";
 import { join } from "node:path";
+import { execSync } from "node:child_process";
 
 // ── CLI arg resolution ────────────────────────────────────────────────────────
 
@@ -75,7 +77,7 @@ function p(style: string, ...spans: string[]): string {
 }
 
 function sectionHeader(title: string): string {
-  return p("P3", span("T21", title), span("T25", ""));
+  return p("P3", span("T21", title));
 }
 
 function eduRow(institution: string, date: string): string {
@@ -168,17 +170,9 @@ const blocks: string[] = [
   ),
   bulletList(
     [
-      "Designed, developed, and tested graphics and simulation software for six multiplayer XR " +
-        "applications integrated into ASU curricula; validated performance across 25+ concurrent " +
-        "users, with published research confirming 5% STEM retention improvement across 4,000+ students.",
-      "Engineered real-time simulation systems (water physics, foliage decay, particle VFX) under " +
-        "strict performance budgets; conducted CPU/GPU profiling on target hardware to meet quality " +
-        "and latency standards.",
-      "Collaborated cross-functionally with educators, researchers, and engineers to gather " +
-        "requirements and deliver software solutions aligned to customer specifications.",
-      "Built autonomous agent behavior system and ocean simulation for a permanent public installation " +
-        "at Bishop Museum’s J. Watumull Planetarium; engineered and documented for a 10-year " +
-        "operational lifespan.",
+      "Owned end-to-end deployment of six multiplayer XR systems serving 25+ concurrent users; published research validated 5% measurable improvement in outcomes across 4,000+ students, demonstrating impact-driven delivery.",
+      "Designed autonomous agent behavior systems and physics-based ocean simulation for Wayfinders, a permanent interactive installation at Bishop Museum’s J. Watumull Planetarium (Honolulu); engineered for 10-year production lifespan with rigorous reliability requirements.",
+      "Managed quantitative performance budgets through systematic CPU/GPU profiling and optimization across multiple real-time simulation systems; balanced speed, rigor, and hardware constraints in production deployments.",
     ],
     true
   ),
@@ -186,62 +180,54 @@ const blocks: string[] = [
   // PROJECTS
   sectionHeader("PROJECTS"),
 
-  projHeader("Mixed-Wafer Defect Detection", "ML / Computer Vision"),
+  projHeader("ML Pipeline for IBD Identification", "M.S. Capstone"),
   bulletList([
-    "Implemented a multi-class ML classifier for silicon wafer defect detection; designed " +
-      "structured feature engineering and evaluation pipelines in Python, applying analytical " +
-      "problem-solving to an industrial quality assurance domain.",
+    "Built end-to-end analytical pipeline for microbiome sequencing data: ETL, Bayesian shrinkage regularization (horseshoe priors), polynomial curve fitting; engineered evaluation criteria to distinguish model signal from data leakage and validate system reliability.",
+    "Designed structured validation and evaluation framework to surface model limitations and prevent false confidence — applicable to building reliable AI/ML systems in production.",
   ]),
 
   projHeader("ShaderWrap", "Full-Stack AI Developer Tool"),
   bulletList([
-    "Owned the full software development lifecycle: designed FastAPI/Python backend, implemented " +
-      "inference pipeline, curated training datasets, and deployed a fine-tuned 14B-parameter LLM " +
-      "(Qwen2.5-Coder) end-to-end; iterated using Agile cycles to ship a working product.",
+    "Designed and built an end-to-end LLM-powered developer tool: FastAPI/Python backend, Ollama local inference with cloud API fallback; architected human-in-the-loop workflow with evaluation layer for model output quality control.",
+    "Fine-tuned Qwen2.5-Coder (14B params, 5-bit quantized) on curated domain-specific dataset; handled dataset curation, training, quantization, and Hugging Face deployment end-to-end.",
   ]),
 
-  projHeaderAlt("Daileet", "DSA Study Tool"),
+  projHeader("Mixed-Wafer Defect Detection", "ML / Computer Vision"),
   bulletList([
-    "Designed a custom REST API interfacing with LeetCode’s GraphQL to retrieve user data " +
-      "and persist to SQLite3; implemented SM-2 spaced repetition algorithm with a terminal UI, " +
-      "applying software design principles throughout.",
-  ]),
-
-  projHeader("Stack Scraper", "Python Automation Tool"),
-  bulletList([
-    "Built a modular Python pipeline for multi-source media ingestion, AI speech transcription, " +
-      "and structured document synthesis; designed for maintainability and extensibility.",
-  ]),
-
-  projHeader("ML Pipeline for IBD Identification", "M.S. Capstone"),
-  bulletList([
-    "End-to-end pipeline for microbiome sequencing data: ETL, Bayesian shrinkage regularization " +
-      "(horseshoe priors), polynomial curve fitting; evaluation criteria engineered to distinguish " +
-      "model signal from data leakage.",
+    "Trained and evaluated a multi-class ML classifier for silicon wafer defect detection; built feature engineering pipeline and structured evaluation framework with rigorous validation criteria in Python.",
   ]),
 
   projHeader("Metagenomic Analysis Dashboard", ""),
   bulletList([
-    "Led all engineering on a large-scale sequencing data pipeline on distributed HPC infrastructure " +
-      "(QIIME2, SLURM); built interactive 3D visualizations for cross-functional research collaboration.",
+    "Led all engineering on a large-scale sequencing data pipeline on distributed HPC infrastructure (QIIME2, SLURM); translated ambiguous research requirements into deployed analytical system with interactive 3D phylogenetic tree and genomic embedding visualizations for cross-functional stakeholders.",
+  ]),
+
+  projHeaderAlt("Daileet", "DSA Study Tool"),
+  bulletList([
+    "Built Python tool with custom SQLite3 database and GraphQL API integration; implemented SM-2 spaced repetition algorithm and session-based authentication; designed custom API layer to abstract LeetCode’s GraphQL endpoints.",
+  ]),
+
+  projHeader("Stack Scraper", "Python Automation Tool"),
+  bulletList([
+    "Python automation pipeline for multi-source media ingestion: scrapes social content, transcribes video via AI speech recognition model inference, synthesizes structured documents; designed for extensibility and production reliability.",
   ]),
 
   // SKILLS
   sectionHeader("SKILLS"),
-  skillLine("Languages", "C/C++, Python, C#, TypeScript, Go, SQL, Rust, HLSL/GLSL"),
-  skillLine(
-    "Software Engineering",
-    "Agile development, code review, technical documentation, software testing, CI/CD"
-  ),
+  skillLine("Languages", "Python, SQL, TypeScript, Go, Rust, C#, HLSL/GLSL; C/C++"),
   skillLine(
     "AI / ML",
-    "PyTorch, LLM fine-tuning, model quantization, Ollama, LangGraph, multi-agent orchestration"
+    "PyTorch, LLM fine-tuning, model quantization, Ollama, LangGraph, multi-agent orchestration, evaluation frameworks, human-in-the-loop workflows"
   ),
   skillLine(
     "Backend / Data",
-    "FastAPI, REST APIs, data pipeline architecture, scientific computing, HPC/SLURM"
+    "FastAPI, REST APIs, data pipeline architecture, ETL, scientific computing, HPC/SLURM"
   ),
-  skillLine("Infrastructure", "Git, Docker, Nextflow, Snakemake, automated testing"),
+  skillLine("Infrastructure", "Git, Docker, CI/CD, automated testing, Nextflow, Snakemake"),
+  skillLine(
+    "Graphics / Simulation",
+    "Unity, URP, ShaderGraph, real-time rendering, shader development, GPU profiling"
+  ),
 ];
 
 const newBody = `<office:text>${blocks.join("")}</office:text>`;
@@ -269,4 +255,11 @@ const zipped = zipSync({
 });
 
 await Bun.write(OUTPUT, zipped);
-console.log(`Written: ${OUTPUT}`);
+console.log(`Written:  ${OUTPUT}`);
+
+const outDir = join("./Resumes");
+execSync(`libreoffice --headless --convert-to pdf --outdir "${outDir}" "${OUTPUT}"`, {
+  stdio: "inherit",
+});
+const pdfPath = OUTPUT.replace(/\.odt$/, ".pdf");
+console.log(`PDF:      ${pdfPath}`);
