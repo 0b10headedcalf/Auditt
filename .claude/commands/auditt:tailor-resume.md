@@ -42,7 +42,7 @@ Parse first: if starts with `--template`, extract template name (next token), re
 
 5. **Determine slug**: Derive `<Company>` and `<JobTitle>` from JD (lowercase, hyphens, no special chars). Run `date +%Y-%m-%d`.
 
-6. **Build ODT resume**: Use the template's ODT file (prefer `.odt` over `.md`). Inject tailored content via Python by splicing a new `<office:text>` body into the template's `content.xml`, preserving all original paragraph styles (P1–P9) and character styles (T19–T30) exactly. Write to `Resumes/<YYYY-MM-DD>_<Company>_<JobTitle>_resume.odt`.
+6. **Build ODT resume**: Use the template's ODT file (prefer `.odt` over `.md`). Inject tailored content via Python by splicing a new `<office:text>` body into the template's `content.xml`, preserving all original paragraph styles (P1–P9) and character styles (T19–T30) exactly. Write to `Resumes/<User's full name>_<JobTitle>_resume.odt`.
 
    Style mapping reference (from SWEBASE.odt):
    - `P1` / `T19` — name (centered, Arial 16pt)
